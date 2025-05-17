@@ -1,0 +1,35 @@
+{
+  "name": "webhook-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -p .",
+    "build:live": "ts-node -r tsconfig-paths/register -r tsm src/index.ts",
+    "build:prod": "ts-node -r tsconfig-paths/register -r tsm src/index.ts",
+    "env:local": "cp -r ./src/environment/environment.local.ts ./src/environment/environment.ts",
+    "env:prod": "cp -r ./src/environment/environment.production.ts ./src/environment/environment.ts",
+    "start": "npm run env:local && npm run build:live",
+    "start:prod": "npm run env:prod && npm run build:prod",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc"
+  },
+  "keywords": [],
+  "author": "Johnathan Sanders",
+  "license": "MIT",
+  "packageManager": "pnpm@10.4.1",
+  "devDependencies": {
+    "@types/node": "^22.15.18",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "tslib": "^2.8.1",
+    "tsm": "^2.3.0",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@tinyhttp/app": "^2.5.2",
+    "@tinyhttp/cors": "^2.0.1",
+    "milliparsec": "^5.0.2",
+    "router": "link:@types/@tinyhttp/router"
+  }
+}
