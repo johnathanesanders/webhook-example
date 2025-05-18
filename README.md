@@ -3,6 +3,48 @@
 This repository is a simple example of how to implement a webhook "receiver". 
 It implements pnpm instead of npm, typescript, and is initially implemented without any unit tests.
 
+## Example of functionality
+
+This code sample accepts a simple JSON payload via `PATCH`, `POST`, or `PUT`. 
+It will log the payload received to console, and return the result as passed through the template engine to the caller as a response.
+
+Sending a payload of:
+```json
+{
+	"fieldOfAFieldToBeRenamed": "something here",
+	"theNameOfAnotherFieldToBeRenamed": 13,
+	"imTheSame": true,
+	"anotherFieldThatWontBeReturned": "Nope, I wont be returned in the template!"
+}
+```
+
+Will log the following to console:
+```bash
+RECEIVED PATCH OR PUT/UPDATE REQUEST WITH BODY OF: {
+  fieldOfAFieldToBeRenamed: 'something here',
+  theNameOfAnotherFieldToBeRenamed: 13,
+  imTheSame: true,
+  anotherFieldThatWontBeReturned: 'Nope, I wont be returned in the template!'
+}
+```
+
+And will return the following to the caller (assuming a `POST`, `PATCH` and `PUT` return slightly different responses as their status codes are different upon success):
+```json
+{
+	"status": 201,
+	"result": {
+		"message": "Input for POST sucessfully received!",
+		"result": [
+			{
+				"fieldToBeCalled": "something here",
+				"anotherFieldNamedWhatYouWant": 13,
+				"imTheSame": true
+			}
+		]
+	}
+}
+```
+
 ## Example of Templating Engine
 
 This code sample includes a rudimentary templating engine allowing output to be returned as a json object with custom transformation and mappings as desired. Within the template, you define the structure you want as the output, and the value of each element is what to transform ***from***. The value of the element can be either a static value or a templated field from the original input.

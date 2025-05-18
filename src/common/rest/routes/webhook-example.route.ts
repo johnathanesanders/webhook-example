@@ -19,7 +19,7 @@ export class WebhookExampleRoute implements IRoute {
                 const result = await this.service.updateRecord(request.body);
                 console.log(result);
                 response.statusCode = 200;
-                response.send({status: 200, result: result});
+                response.send({status: response.statusCode, result: result});
             } catch (error: any) {
                 const translatedHttpError: TranslatedHttpError = translateHttpError(error?.code);
                 response.statusCode = translatedHttpError.statusCode;
@@ -31,8 +31,8 @@ export class WebhookExampleRoute implements IRoute {
         server.post(`${this.basePath}`, async (request: Request, response: Response, next?: Function) => {
             try {
                 const result = await this.service.createRecord(request.body);
-                response.statusCode = 200;
-                response.send({status: 200, result: result});
+                response.statusCode = 201;
+                response.send({status: response.statusCode, result: result});
             } catch (error: any) {
                 const translatedHttpError: TranslatedHttpError = translateHttpError(error?.code);
                 response.statusCode = translatedHttpError.statusCode;
@@ -45,7 +45,7 @@ export class WebhookExampleRoute implements IRoute {
             try {
                 const result = await this.service.updateRecord(request.body);
                 response.statusCode = 200;
-                response.send({status: 200, result: result});
+                response.send({status: response.statusCode, result: result});
             } catch (error: any) {
                 const translatedHttpError: TranslatedHttpError = translateHttpError(error?.code);
                 response.statusCode = translatedHttpError.statusCode;
