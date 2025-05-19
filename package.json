@@ -1,6 +1,6 @@
 {
   "name": "webhook-example",
-  "version": "1.0.0",
+  "version": "0.2.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -29,6 +29,7 @@
   "dependencies": {
     "@tinyhttp/app": "^2.5.2",
     "@tinyhttp/cors": "^2.0.1",
+    "cloudevents": "^9.0.0",
     "milliparsec": "^5.0.2",
     "router": "link:@types/@tinyhttp/router"
   }
