@@ -83,3 +83,50 @@ Will result in an **output** of the following:
     "imTheSame": true
 }
 ```
+
+## Cloudevents
+
+As of release 0.2.0, this code supports receiving CloudEvents via the official [SDK](https://github.com/cloudevents/sdk-javascript)
+
+A new CloudEvents specific route is provided at `src > common > rest > routes > webhook-example-ce.route.ts`. This route only accepts requests via `POST` as per the CloudEvents specification. 
+
+> While the new route enforces `POST` only, it does not enforce `HTTPS` only, which is also part of the specification. Enforce this via an ingress/load balancer/api gateway if using this code as is.
+
+A new CloudEvents specific service is provided at `src > feature > webhook-example-ce > service.ts` with a single method of `processRequest`. As of now, it only outputs to console as does the previous webhook example.
+
+### Example sender
+
+In order to test sending of a cloud event, you can create a new node project with this in the `main()` method of your `index.ts` to send an event to your server (the code in this repository).
+
+```typescript
+import { CloudEvent, HTTP } from 'cloudevents';
+import http from 'http';
+
+const ce: CloudEvent<any> = new CloudEvent({
+    source: '/source',
+    type: 'type',
+    datacontenttype: 'text/plain',
+    dataschema: 'https://d.schema.com/my.json',
+    subject: 'cha.json',
+    data: 'blah blah blah',
+    extension1: 'some extension data',
+});
+const message = HTTP.structured(ce);
+
+const req = http.request({
+    hostname: 'localhost', 
+    port: 8080, 
+    path: '/hook-ce', 
+    method: 'POST',
+    headers: message.headers
+}, (res) => {
+    res.on('end', () => {
+        console.log('Response ended');
+    });
+});
+req.on('error', (error) => {
+    console.error(error);
+});
+req.write(message.body);
+req.end();
+```
